@@ -1,0 +1,162 @@
+Sending build context to Docker daemon   30.1MB
+Step 1/22 : FROM python:3-alpine
+3-alpine: Pulling from library/python
+Digest: sha256:9bb7c74b43a0eba7a7cbda466dafac5e082ad6549d343740ed253788547701e2
+Status: Downloaded newer image for python:3-alpine
+ ---> d5e5ad4a4fc0
+Step 2/22 : ARG VCS_REF
+ ---> Running in 893d9565da03
+Removing intermediate container 893d9565da03
+ ---> 9d61bab8dd4f
+Step 3/22 : ARG BUILD_DATE
+ ---> Running in 136fb7240473
+Removing intermediate container 136fb7240473
+ ---> 178beb5846aa
+Step 4/22 : ARG GIT_USER
+ ---> Running in a919e5b5c84d
+Removing intermediate container a919e5b5c84d
+ ---> f9ef892cac2a
+Step 5/22 : ARG GIT_USER_EMAIL
+ ---> Running in aa0c39d37d32
+Removing intermediate container aa0c39d37d32
+ ---> 167345724c1d
+Step 6/22 : LABEL org.label-schema.vcs-ref=$VCS_REF       org.label-schema.build-date=$BUILD_DATE       org.label-schema.git_user=$GIT_USER       org.label-schema.git_user_email=$GIT_USER_EMAIL
+ ---> Running in 9a870b5627f0
+Removing intermediate container 9a870b5627f0
+ ---> fad85e841918
+Step 7/22 : ARG AWS_ACCESS_KEY_ID
+ ---> Running in e10701c9b608
+Removing intermediate container e10701c9b608
+ ---> cb9c6d028689
+Step 8/22 : ARG AWS_SECRET_ACCESS_KEY
+ ---> Running in 4b8e29752eb8
+Removing intermediate container 4b8e29752eb8
+ ---> cf90bc7855b4
+Step 9/22 : ARG AWS_DEFAULT_REGION
+ ---> Running in 714b61cc7795
+Removing intermediate container 714b61cc7795
+ ---> e66c071696ab
+Step 10/22 : ARG KUBE_ENVIRONMENT
+ ---> Running in 8674acef3f07
+Removing intermediate container 8674acef3f07
+ ---> 30867abcb89b
+Step 11/22 : ENV AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+ ---> Running in b9b710b216a5
+Removing intermediate container b9b710b216a5
+ ---> 4ec4dd6b3532
+Step 12/22 : ENV AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+ ---> Running in 7f87f733bd9a
+Removing intermediate container 7f87f733bd9a
+ ---> caa090b84d37
+Step 13/22 : ENV AWS_DEFAULT_REGION $AWS_DEFAULT_REGION
+ ---> Running in b40e13e47814
+Removing intermediate container b40e13e47814
+ ---> 9eabc6f5b80f
+Step 14/22 : ENV KUBE_ENVIRONMENT $KUBE_ENVIRONMENT
+ ---> Running in 112d6f75aeae
+Removing intermediate container 112d6f75aeae
+ ---> 12b23b066e51
+Step 15/22 : RUN apk --no-cache --update add  ncurses curl openssl bash jq git
+ ---> Running in a5b02cd25552
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.11/community/x86_64/APKINDEX.tar.gz
+(1/10) Installing bash (5.0.11-r1)
+Executing bash-5.0.11-r1.post-install
+(2/10) Installing nghttp2-libs (1.40.0-r0)
+(3/10) Installing libcurl (7.67.0-r0)
+(4/10) Installing curl (7.67.0-r0)
+(5/10) Installing pcre2 (10.34-r1)
+(6/10) Installing git (2.24.1-r0)
+(7/10) Installing oniguruma (6.9.4-r0)
+(8/10) Installing jq (1.6-r0)
+(9/10) Installing ncurses (6.1_p20200118-r2)
+(10/10) Installing openssl (1.1.1d-r3)
+Executing busybox-1.31.1-r9.trigger
+OK: 30 MiB in 44 packages
+Removing intermediate container a5b02cd25552
+ ---> 12b233cef261
+Step 16/22 : RUN pip install --upgrade pip
+ ---> Running in d42e42f0084b
+Requirement already up-to-date: pip in /usr/local/lib/python3.8/site-packages (20.0.2)
+Removing intermediate container d42e42f0084b
+ ---> b9f9198ef710
+Step 17/22 : RUN pip install --upgrade yq
+ ---> Running in 03bcebd44d96
+Collecting yq
+  Downloading yq-2.10.0-py2.py3-none-any.whl (15 kB)
+Collecting argcomplete>=1.8.1
+  Downloading argcomplete-1.11.1-py2.py3-none-any.whl (36 kB)
+Collecting PyYAML>=3.11
+  Downloading PyYAML-5.3.1.tar.gz (269 kB)
+Collecting xmltodict>=0.11.0
+  Downloading xmltodict-0.12.0-py2.py3-none-any.whl (9.2 kB)
+Requirement already satisfied, skipping upgrade: setuptools in /usr/local/lib/python3.8/site-packages (from yq) (46.1.1)
+Building wheels for collected packages: PyYAML
+  Building wheel for PyYAML (setup.py): started
+  Building wheel for PyYAML (setup.py): finished with status 'done'
+  Created wheel for PyYAML: filename=PyYAML-5.3.1-cp38-cp38-linux_x86_64.whl size=44617 sha256=338863d4359321e70585a947761b92c132a611a7705ec59ce875a16880aa1c95
+  Stored in directory: /root/.cache/pip/wheels/13/90/db/290ab3a34f2ef0b5a0f89235dc2d40fea83e77de84ed2dc05c
+Successfully built PyYAML
+Installing collected packages: argcomplete, PyYAML, xmltodict, yq
+Successfully installed PyYAML-5.3.1 argcomplete-1.11.1 xmltodict-0.12.0 yq-2.10.0
+Removing intermediate container 03bcebd44d96
+ ---> 0a68c852a266
+Step 18/22 : RUN pip install awscli
+ ---> Running in b17a64e4c626
+Collecting awscli
+  Downloading awscli-1.18.37-py2.py3-none-any.whl (3.0 MB)
+Collecting s3transfer<0.4.0,>=0.3.0
+  Downloading s3transfer-0.3.3-py2.py3-none-any.whl (69 kB)
+Collecting botocore==1.15.37
+  Downloading botocore-1.15.37-py2.py3-none-any.whl (6.1 MB)
+Collecting colorama<0.4.4,>=0.2.5; python_version != "3.4"
+  Downloading colorama-0.4.3-py2.py3-none-any.whl (15 kB)
+Requirement already satisfied: PyYAML<5.4,>=3.10; python_version != "3.4" in /usr/local/lib/python3.8/site-packages (from awscli) (5.3.1)
+Collecting docutils<0.16,>=0.10
+  Downloading docutils-0.15.2-py3-none-any.whl (547 kB)
+Collecting rsa<=3.5.0,>=3.1.2
+  Downloading rsa-3.4.2-py2.py3-none-any.whl (46 kB)
+Collecting python-dateutil<3.0.0,>=2.1
+  Downloading python_dateutil-2.8.1-py2.py3-none-any.whl (227 kB)
+Collecting jmespath<1.0.0,>=0.7.1
+  Downloading jmespath-0.9.5-py2.py3-none-any.whl (24 kB)
+Collecting urllib3<1.26,>=1.20; python_version != "3.4"
+  Downloading urllib3-1.25.8-py2.py3-none-any.whl (125 kB)
+Collecting pyasn1>=0.1.3
+  Downloading pyasn1-0.4.8-py2.py3-none-any.whl (77 kB)
+Collecting six>=1.5
+  Downloading six-1.14.0-py2.py3-none-any.whl (10 kB)
+Installing collected packages: six, python-dateutil, jmespath, docutils, urllib3, botocore, s3transfer, colorama, pyasn1, rsa, awscli
+Successfully installed awscli-1.18.37 botocore-1.15.37 colorama-0.4.3 docutils-0.15.2 jmespath-0.9.5 pyasn1-0.4.8 python-dateutil-2.8.1 rsa-3.4.2 s3transfer-0.3.3 six-1.14.0 urllib3-1.25.8
+Removing intermediate container b17a64e4c626
+ ---> f060fe0f7545
+Step 19/22 : RUN curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator &&    chmod +x /usr/local/bin/aws-iam-authenticator
+ ---> Running in abe7e660d51d
+[91m  % Total    % Received % Xf[0m[91merd [0m[91m Average Speed   Time  [0m[91m  Ti[0m[91mme     [0m[91mTime[0m[91m  Cu[0m[91mrrent
+[0m[91m    [0m[91m    [0m[91m      [0m[91m      [0m[91m    [0m[91m         Dload  Uploa[0m[91md   Total   Spent[0m[91m    Left  S[0m[91mpeed
+  0     0    0   [0m[91m  0    0     0 [0m[91m    [0m[91m 0[0m[91m   [0m[91m   0 --:--:-- --:--:-[0m[91m- --:--:--[0m[91m  [0m[91m   0[0m[91m  0     0    0     0    0     0      0      0 --:--[0m[91m:-- --:--:-- --:--:--     [0m[91m0[0m[91m  0 17.7M    0  101k    0     0  60233      0  0:05:09  0:00[0m[91m:01  0[0m[91m:05:08 60198[0m[91m  6 17.7M    6 1257k    0     0   464[0m[91mk      0  0:00:39  0:00:02  0:[0m[91m00:37  463k[0m[91m 19 17.7M   19 3641k    0     0   981k      0  0:00:18  0:00:03  0:00:15  981k[0m[91m 33 17.7M   33 6041k    0     0  1282k      0  0:00:14  0:00:04  0:00:10 1282k[0m[91m 46 17.7M   46 8441k    0     0  147[0m[91m8k      0  0:00:12 [0m[91m 0[0m[91m:00:05[0m[91m  0:[0m[91m00[0m[91m:07 [0m[91m1767[0m[91mk[0m[91m 59 17.7M   59 10.5M    0     0  1615k      0  0:00:11  0[0m[91m:00:06  0:00:05 2155k[0m[91m 72 17.7M   72 12.9M    0     0  1717k      0  0:00:10  0:00:07  0:00:03 2396k[0m[91m 85 17.7M   85 15.2M    0     0  1797k      0  0:00:10  0:00:08  0:00:02 2403k[0m[91m 99 17.7M   99 17.6M    0     0  1861k      0  0:00:09  0:00:09 --:--:-- 2406k[0m[91m100 17.7M  100 17.7M    0     0  1864k      0  0:00:09  0:00:09 --:--:-- 2406k
+[0mRemoving intermediate container abe7e660d51d
+ ---> a29ce6d3e6f4
+Step 20/22 : RUN curl -o  /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/linux/amd64/kubectl &&    chmod +x /usr/local/bin/kubectl
+ ---> Running in 73fa31bb5a58
+[91m  % Total    % Received % Xferd  Average Speed   T[0m[91mim[0m[91me    Time     Time  Current
+        [0m[91m                  [0m[91m       Dload  Upload  [0m[91m [0m[91mTotal   S[0m[91mpent  [0m[91m  Le[0m[91mft  [0m[91mSpeed[0m[91m
+[0m[91m  0  [0m[91m  [0m[91m 0   [0m[91m 0[0m[91m     0 [0m[91m   0[0m[91m     [0m[91m0   [0m[91m   0[0m[91m    [0m[91m  0 [0m[91m--:[0m[91m--:-- [0m[91m--[0m[91m:--:-- [0m[91m--:[0m[91m--:-- [0m[91m   [0m[91m 0[0m[91m  1 40.9M    1  665k    0     0   767k      0  0:00:54 --:--:--  0:00:54  767k[0m[91m  7 40.9M    7 3022k    0     0  1619k      0  [0m[91m0:00:25  0:00:01  0:00:24 1618k[0m[91m 12 40.9M   12 5422k    0     0  1891k      0  0:00:22  0:00:02  0:00:20 1890k[0m[91m 18 40.9M   18 7806k    0     0  2018k      [0m[91m0  0:00:20  0:00:03  0:00:17[0m[91m 2018k[0m[91m 24 40.9M   24  9.9M    0     0  2083k      [0m[91m0  0:00:20  0:00:[0m[91m04  0:00:16 2083k[0m[91m 29 40.9M   29 12.2M    0     0  2135k      0  0:00:19  0:00:05  0:00:[0m[91m14 2372k[0m[91m 34 40.9M   34 14.3M    0     0  2136k      0  0:00:19  0:00:06  0:00:13 2329k[0m[91m 39 40.9M   39 16.3M    0     0  2131k      0  0:00:19  0:00:07  0:00:12 2268k[0m[91m 45 40.9M   45 18.7M    0     0  2159k      0  0:00:19  0:00:08  0:00:11 2268k[0m[91m 51 40.9M   51 21.0M    0     0  2180k      0  0:00:19  0:00:09  0:00:10 2275k[0m[91m 56 40.9M   56 23.3M    0     0  2198k      0  0[0m[91m:00:19  0:00:10  0:00:09 [0m[91m2272k[0m[91m 62 40.9M   62 25.6M    0     0  2212k     [0m[91m 0  0:00:18  0:00:11  [0m[91m0:00[0m[91m:07 2316k[0m[91m 68 40.9M   68 27.9M    0     0  2224k      0  0:0[0m[91m0:18  0:00:12  0:00:06 2371k[0m[91m 69 40.9M   69 28.4M    0     0  2098k      0  0:00:20  0:00:13  0:00:07 1989k[0m[91m 72 40.9M   72 29.8M    0     0  2057k      0  0:00:20  0:00:14  0:00:06 1813k[0m[91m 78 40.9M   78 32.2M    0     0  2078k      0  0:00:20  0:00:15  0:00:05 1817k[0m[91m 84 40.9M   84 34.5M    0     0  2095k      0  0:00:20  0:00:16  0:00:04 1817k[0m[91m 89 40.9M   89 36.8M    0     0  2111k      0  0:00:19 [0m[91m 0:00:17  0:00:02 1820k[0m[91m 95 40.9M   95 39.0M    0     0  2119k [0m[91m     0  0:00:19  0:0[0m[91m0:18  0[0m[91m:00:01[0m[91m 2178k[0m[91m100 40.9M  100 40.9M    0     0  2128k      0  0:00:[0m[91m19  0:00:19 --:--:-- 2347k
+[0mRemoving intermediate container 73fa31bb5a58
+ ---> 29e7b5fd29f2
+Step 21/22 : RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+ ---> Running in 2e25729e68c2
+[91m  % Total    % Received % Xferd  Average Speed   [0m[91mTime    Time     Time  Current
+           [0m[91m    [0m[91m         [0m[91m         Dload  Upload[0m[91m   Total   Spent    Left  Speed[0m[91m
+  0[0m[91m     [0m[91m0    0   [0m[91m  0  [0m[91m  0  [0m[91m   0  [0m[91m    0 [0m[91m     0 [0m[91m--:--:[0m[91m-- --:-[0m[91m-:-- -[0m[91m-:--:-[0m[91m-     [0m[91m0[0m[91m  0     0    0     0    0     0      0      0 --:--:-- -[0m[91m-:--:-- --:--:--     0[0m[91m100  6794  100  6794    0     0  18214      0 --:[0m[91m--:-- --:--:-- --:--:-- [0m[91m1816[0m[91m5
+[0mDownloading https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+Removing intermediate container 2e25729e68c2
+ ---> eb6571d1b67c
+Step 22/22 : CMD [ "sh","-l"]
+ ---> Running in 4515ae7c28fd
+Removing intermediate container 4515ae7c28fd
+ ---> 17645c28b570
+Successfully built 17645c28b570
+Successfully tagged 318139558370.dkr.ecr.us-east-1.amazonaws.com/automation/gitlab-runners:tools
