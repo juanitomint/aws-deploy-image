@@ -27,15 +27,16 @@ RUN apk --no-cache --update add  ncurses curl openssl bash jq git
 RUN pip install --upgrade pip
 # install yq for parsing yaml files (requires jq)
 RUN pip install --upgrade yq
-# aws-cli
-RUN pip install awscli
+# aws-cli v2
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip 
+# && ./aws/install -b /usr/local/bin
 
 # aws-iam-authenticator
-RUN curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator &&\
+RUN curl -o /usr/local/bin/aws-iam-authenticator "https://amazon-eks.s3-us-west-2.amazonaws.com/1.13.7/2019-06-11/bin/linux/amd64/aws-iam-authenticator" &&\
     chmod +x /usr/local/bin/aws-iam-authenticator
 
 # install kubectl
-RUN curl -o  /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.15.0/bin/linux/amd64/kubectl &&\
+RUN curl -o  /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl" &&\
     chmod +x /usr/local/bin/kubectl 
     
 #  install HELM

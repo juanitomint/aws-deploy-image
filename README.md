@@ -1,6 +1,7 @@
 # docker deploy image
 
-This image contains all the tools needed for deploying to an AKS cluster
+This image contains all the tools needed for deploying to an Kubernetes cluster EKS version
+you can easily adapt it to any other flavor
 
 
 
